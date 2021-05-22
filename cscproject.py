@@ -1,4 +1,4 @@
- from tkinter import *
+from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
 
@@ -8,24 +8,38 @@ root.geometry('200x100')
 root.title('EntryPage')
 
 
-# adding details to table after entry for signup
+# adding details to table after entry for signup and checking wheteher username is unique or not
 def signup_professional_submit():
     import mysql.connector as sql
-    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    con = sql.connect(host='localhost', user='root', password='1234', database='kdproject', autocommit=True)
     cur = con.cursor()
-    cur.execute("insert into professional values('{}','{}','{}',{},'{}','{}','{}')".format(a1.get(), a2.get(), a3.get(),a4.get(), a5.get(), a6.get(),a7.get()))
-    messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
-    root_sp.destroy()
+    cur.execute("select * from professional where username='{}'".format(a1.get()))
+    res = cur.fetchall()
+    if cur.rowcount == 0:
+        cur.execute("insert into professional values('{}','{}','{}',{},'{}','{}','{}')".format(a1.get(), a2.get(), a3.get(), a4.get(), a5.get(), a6.get(), a7.get()))
+        messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
+        root_sp.destroy()
+    else:
+        messagebox.showwarning(" ", "Username already exists!")
+
+
+
+
 
 
 def signup_user_submit():
     import mysql.connector as sql
-    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    con = sql.connect(host='localhost', user='root', password='1234', database='kdproject', autocommit=True)
     cur = con.cursor()
-    cur.execute("insert into user values('{}','{}','{}',{},'{}','{}')".format(b1.get(), b2.get(), b3.get(), b4.get(), b5.get(),b6.get()))
-    messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
-    root_su.destroy()
+    cur.execute("select * from professional where username='{}'".format(b1.get()))
+    res = cur.fetchall()
+    if cur.rowcount == 0:
+        cur.execute("insert into user values('{}','{}','{}',{},'{}','{}')".format(b1.get(), b2.get(), b3.get(), b4.get(), b5.get(), b6.get()))
+        messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
+        root_su.destroy()
 
+    else:
+        messagebox.showwarning(" ", "Username already exists!")
 
 # signup professional and user
 def signup_professional():
@@ -57,7 +71,9 @@ def signup_professional():
     a7 = Entry(root_sp)
     a7.grid(row=6, column=1, columnspan=1)
 
-    Button(root_sp, text='Submit', command=signup_professional_submit, bg='light green', fg='blue').grid(row=7,column=0,columnspan=2)
+    Button(root_sp, text='Submit', command=signup_professional_submit, bg='light green', fg='blue').grid(row=7,
+                                                                                                         column=0,
+                                                                                                         columnspan=2)
 
 
 def signup_user():
@@ -86,13 +102,14 @@ def signup_user():
     b6 = Entry(root_su)
     b6.grid(row=5, column=1, columnspan=1)
 
-    Button(root_su, text='Submit', command=signup_user_submit, bg='light green', fg='blue').grid(row=6, column=0,columnspan=2)
+    Button(root_su, text='Submit', command=signup_user_submit, bg='light green', fg='blue').grid(row=6, column=0,
+                                                                                                 columnspan=2)
 
 
 # ********************************************************
 def login_professional_submit():
     import mysql.connector as sql
-    con = sql.connect(host="localhost", user="root", password="2810", database="kdproject", autocommit=True)
+    con = sql.connect(host="localhost", user="root", password="1234", database="kdproject", autocommit=True)
     cur = con.cursor()
     cur.execute('select * from professional where username="{}"'.format(c1.get()))
     res = cur.fetchall()
@@ -108,7 +125,7 @@ def login_professional_submit():
 
 def login_user_submit():
     import mysql.connector as sql
-    con = sql.connect(host="localhost", user="root", password="2810", database="kdproject", autocommit=True)
+    con = sql.connect(host="localhost", user="root", password="1234", database="kdproject", autocommit=True)
     cur = con.cursor()
     cur.execute('select * from user where username="{}"'.format(d1.get()))
     res = cur.fetchall()
@@ -136,7 +153,8 @@ def login_professional():
     c2 = Entry(root_lp, show="*")
     c2.grid(row=1, column=1)
 
-    Button(root_lp, text="Login", command=login_professional_submit, bg='light green', fg='blue').grid(row=3, column=0,columnspan=2)
+    Button(root_lp, text="Login", command=login_professional_submit, bg='light green', fg='blue').grid(row=3, column=0,
+                                                                                                       columnspan=2)
 
 
 def login_user():
@@ -152,28 +170,42 @@ def login_user():
     d2 = Entry(root_lu, show="*")
     d2.grid(row=1, column=1)
 
-    Button(root_lu, text="Login", command=login_user_submit, bg='light green', fg='blue').grid(row=3, column=0,columnspan=2)
+    Button(root_lu, text="Login", command=login_user_submit, bg='light green', fg='blue').grid(row=3, column=0,
+                                                                                               columnspan=2)
+
 
 # ********************************************************
 def signup():
     root_s = Toplevel()
     root_s.geometry('400x250')
     root_s.title('Sign Up')
-    Label(root_s, text='What kind of an account do you want to create?', font=('arial', 10, 'bold')).grid(row=0,column=0,columnspan=2)
+    Label(root_s, text='What kind of an account do you want to create?', font=('arial', 10, 'bold')).grid(row=0,
+                                                                                                          column=0,
+                                                                                                          columnspan=2)
 
     # Buttons
-    Button(root_s, text='Professional Account', command=signup_professional, bg='light green', fg='blue').grid(row=2,column=0,pady=10,padx=50)
-    Button(root_s, text='User Account', command=signup_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,padx=20)
+    Button(root_s, text='Professional Account', command=signup_professional, bg='light green', fg='blue').grid(row=2,
+                                                                                                               column=0,
+                                                                                                               pady=10,
+                                                                                                               padx=50)
+    Button(root_s, text='User Account', command=signup_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,
+                                                                                               padx=20)
 
 
 def login():
     root_l = Toplevel()
     root_l.geometry('400x250')
     root_l.title('Login')
-    Label(root_l, text='With which account do you want to login with?', font=('arial', 10, 'bold')).grid(row=0,column=0,columnspan=2)
+    Label(root_l, text='With which account do you want to login with?', font=('arial', 10, 'bold')).grid(row=0,
+                                                                                                         column=0,
+                                                                                                         columnspan=2)
 
-    Button(root_l, text='Professional Account', command=login_professional, bg='light green', fg='blue').grid(row=2,column=0,pady=10,padx=50)
-    Button(root_l, text='User Account', command=login_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,padx=20)
+    Button(root_l, text='Professional Account', command=login_professional, bg='light green', fg='blue').grid(row=2,
+                                                                                                              column=0,
+                                                                                                              pady=10,
+                                                                                                              padx=50)
+    Button(root_l, text='User Account', command=login_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,
+                                                                                              padx=20)
 
 
 # Entrypage
