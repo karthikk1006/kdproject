@@ -16,9 +16,7 @@ def signup_professional_submit():
     cur.execute("select * from professional where username='{}'".format(a1.get()))
     res = cur.fetchall()
     if cur.rowcount == 0:
-        cur.execute("insert into professional values('{}','{}','{}',{},'{}','{}','{}')".format(a1.get(), a2.get(), a3.get(),
-                                                                                       a4.get(), a5.get(), a6.get(),
-                                                                                       a7.get()))
+        cur.execute("insert into professional values('{}','{}','{}',{},'{}','{}','{}')".format(a1.get(), a2.get(), a3.get(), a4.get(), a5.get(), a6.get(), a7.get()))
         messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
         root_sp.destroy()
     else:
@@ -36,9 +34,7 @@ def signup_user_submit():
     cur.execute("select * from professional where username='{}'".format(b1.get()))
     res = cur.fetchall()
     if cur.rowcount == 0:
-        cur.execute("insert into user values('{}','{}','{}',{},'{}','{}')".format(b1.get(), b2.get(), b3.get(), b4.get(),
-                                                                          b5.get(),
-                                                                          b6.get()))
+        cur.execute("insert into user values('{}','{}','{}',{},'{}','{}')".format(b1.get(), b2.get(), b3.get(), b4.get(), b5.get(), b6.get()))
         messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
         root_su.destroy()
 
