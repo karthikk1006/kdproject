@@ -1,0 +1,17 @@
+from tkinter import *
+from PIL import ImageTk,Image
+root=Tk()
+root.title('SignUp')
+root.geometry('274x176')
+Label(root, text='What kind of an account would you like to create?').grid(row=0,column=0,columnspan=2,sticky='news')
+img1=Image.open('Admin1.png')
+img1=img1.resize((100,100),Image.ANTIALIAS)
+img01 =ImageTk.PhotoImage(img1)
+Label(root, image=img01).grid(row=1,column=0)
+img2=Image.open('User.jpg')
+img2=img2.resize((100,100),Image.ANTIALIAS)
+img02 =ImageTk.PhotoImage(img2)
+Label(root, image=img02).grid(row=1,column=1)
+Button(root, text='Professional Account',font=('arial',10,'bold'),bg='light green',fg='blue').grid(row=2,column=0)
+Button(root, text='User Account',font=('arial',10,'bold'),bg='light green',fg='blue').grid(row=2,column=1)
+root.mainloop()
