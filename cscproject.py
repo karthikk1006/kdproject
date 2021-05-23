@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
+#hello world
 
 # mainroot
 root = Tk()
@@ -11,7 +12,7 @@ root.title('EntryPage')
 # adding details to table after entry for signup and checking wheteher username is unique or not
 def signup_professional_submit():
     import mysql.connector as sql
-    con = sql.connect(host='localhost', user='root', password='1234', database='kdproject', autocommit=True)
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
     cur.execute("select * from professional where username='{}'".format(a1.get()))
     res = cur.fetchall()
@@ -24,12 +25,9 @@ def signup_professional_submit():
 
 
 
-
-
-
 def signup_user_submit():
     import mysql.connector as sql
-    con = sql.connect(host='localhost', user='root', password='1234', database='kdproject', autocommit=True)
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
     cur.execute("select * from professional where username='{}'".format(b1.get()))
     res = cur.fetchall()
@@ -109,7 +107,7 @@ def signup_user():
 # ********************************************************
 def login_professional_submit():
     import mysql.connector as sql
-    con = sql.connect(host="localhost", user="root", password="1234", database="kdproject", autocommit=True)
+    con = sql.connect(host="localhost", user="root", password="2810", database="kdproject", autocommit=True)
     cur = con.cursor()
     cur.execute('select * from professional where username="{}"'.format(c1.get()))
     res = cur.fetchall()
@@ -125,7 +123,7 @@ def login_professional_submit():
 
 def login_user_submit():
     import mysql.connector as sql
-    con = sql.connect(host="localhost", user="root", password="1234", database="kdproject", autocommit=True)
+    con = sql.connect(host="localhost", user="root", password="2810", database="kdproject", autocommit=True)
     cur = con.cursor()
     cur.execute('select * from user where username="{}"'.format(d1.get()))
     res = cur.fetchall()
