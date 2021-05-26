@@ -1,4 +1,5 @@
 from tkinter import *
+import importlib
 from PIL import ImageTk, Image
 from tkinter import messagebox
 #hello world
@@ -119,7 +120,7 @@ def login_professional_submit():
                 root_lp.destroy()
                 root_l.destroy()
                 root.destroy()
-
+                importlib.import_module('mainwindow')
 
 
 
