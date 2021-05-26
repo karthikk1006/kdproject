@@ -20,11 +20,9 @@ def signup_professional_submit():
         cur.execute("insert into professional values('{}','{}','{}',{},'{}','{}','{}')".format(a1.get(), a2.get(), a3.get(), a4.get(), a5.get(), a6.get(), a7.get()))
         messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
         root_sp.destroy()
+        root_s.destroy()
     else:
         messagebox.showwarning(" ", "Username already exists!")
-
-
-
 def signup_user_submit():
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
@@ -35,9 +33,11 @@ def signup_user_submit():
         cur.execute("insert into user values('{}','{}','{}',{},'{}','{}')".format(b1.get(), b2.get(), b3.get(), b4.get(), b5.get(), b6.get()))
         messagebox.showinfo(" ", "ACCOUNT CREATION SUCCESSFUL")
         root_su.destroy()
+        root_s.destroy()
 
     else:
         messagebox.showwarning(" ", "Username already exists!")
+
 
 # signup professional and user
 def signup_professional():
@@ -72,8 +72,6 @@ def signup_professional():
     Button(root_sp, text='Submit', command=signup_professional_submit, bg='light green', fg='blue').grid(row=7,
                                                                                                          column=0,
                                                                                                          columnspan=2)
-
-
 def signup_user():
     global b1, b2, b3, b4, b5, b6, root_su
     root_su = Toplevel()
@@ -118,7 +116,12 @@ def login_professional_submit():
             if i[1] != c2.get():
                 messagebox.showwarning(" ", "Incorrect password")
             else:
-                pass
+                root_lp.destroy()
+                root_l.destroy()
+                root.destroy()
+
+
+
 
 
 def login_user_submit():
@@ -134,11 +137,15 @@ def login_user_submit():
             if i[1] != d2.get():
                 messagebox.showwarning(" ", "Incorrect password")
             else:
-                pass
+                root_lu.destroy()
+                root_l.destroy()
+                root.destroy()
+
 
 
 # login professional and user
 def login_professional():
+    global root_lp
     global c1, c2
     root_lp = Toplevel()
     root_lp.geometry("200x150")
@@ -153,9 +160,8 @@ def login_professional():
 
     Button(root_lp, text="Login", command=login_professional_submit, bg='light green', fg='blue').grid(row=3, column=0,
                                                                                                        columnspan=2)
-
-
 def login_user():
+    global root_lu
     global d1, d2
     root_lu = Toplevel()
     root_lu.geometry("200x150")
@@ -174,6 +180,7 @@ def login_user():
 
 # ********************************************************
 def signup():
+    global root_s
     root_s = Toplevel()
     root_s.geometry('400x250')
     root_s.title('Sign Up')
@@ -191,6 +198,7 @@ def signup():
 
 
 def login():
+    global root_l
     root_l = Toplevel()
     root_l.geometry('400x250')
     root_l.title('Login')
