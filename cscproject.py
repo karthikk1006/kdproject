@@ -1,13 +1,40 @@
 from tkinter import *
 import importlib
+from tkinter import Frame
 from PIL import ImageTk, Image
 from tkinter import messagebox
-#hello world
 
-# mainroot
-root = Tk()
-root.geometry('200x100')
-root.title('EntryPage')
+def mainwindow_professional(u):
+    main_window = Tk()
+    main_window.title('Main window')
+    main_window.geometry('1920x1080')
+    main_window.state('zoomed')
+    # Frame
+    frame1 = Frame(main_window, bg='PaleGreen1', highlightbackground="dark green", highlightthickness=1)
+    frame1.pack(side=TOP, fill=X)
+    Label(frame1, text='*Name*', bg='PaleGreen1', font=('TkDefaultFont', 16)).pack(side='left', padx=10, pady=5)
+
+    dropmenu = Menubutton(frame1, text='  Menu  ', bg='Light blue', font=('TkDefaultFont', 16), relief=SOLID)
+    dropmenu.menu = Menu(dropmenu)
+    dropmenu['menu'] = dropmenu.menu
+
+    dropmenu.menu.add_command(label='Profile')
+    dropmenu.menu.add_command(label='Username Reset')
+    dropmenu.menu.add_command(label='Password Reset')
+    dropmenu.menu.add_command(label='Sign Out')
+
+    dropmenu.pack(side=RIGHT, padx=10, pady=5)
+    # Image
+    bgimg = ImageTk.PhotoImage(Image.open('bgimage.jpg'))
+    Label(main_window, image=bgimg).pack(side=TOP, fill=X)
+
+    # Main window features
+    main_window.mainloop()
+
+
+
+
+
 
 
 # adding details to table after entry for signup and checking wheteher username is unique or not
@@ -38,8 +65,6 @@ def signup_user_submit():
 
     else:
         messagebox.showwarning(" ", "Username already exists!")
-
-
 # signup professional and user
 def signup_professional():
     global a1, a2, a3, a4, a5, a6, a7, root_sp
@@ -101,13 +126,13 @@ def signup_user():
 
     Button(root_su, text='Submit', command=signup_user_submit, bg='light green', fg='blue').grid(row=6, column=0,
                                                                                                  columnspan=2)
-
-
 # ********************************************************
 def login_professional_submit():
+    global c11
     import mysql.connector as sql
     con = sql.connect(host="localhost", user="root", password="2810", database="kdproject", autocommit=True)
     cur = con.cursor()
+    c11=c1.get()
     cur.execute('select * from professional where username="{}"'.format(c1.get()))
     res = cur.fetchall()
     if cur.rowcount == 0:
@@ -120,11 +145,7 @@ def login_professional_submit():
                 root_lp.destroy()
                 root_l.destroy()
                 root.destroy()
-                importlib.import_module('mainwindow')
-
-
-
-
+                mainwindow_professional(c11)
 def login_user_submit():
     import mysql.connector as sql
     con = sql.connect(host="localhost", user="root", password="2810", database="kdproject", autocommit=True)
@@ -141,9 +162,6 @@ def login_user_submit():
                 root_lu.destroy()
                 root_l.destroy()
                 root.destroy()
-
-
-
 # login professional and user
 def login_professional():
     global root_lp
@@ -177,8 +195,6 @@ def login_user():
 
     Button(root_lu, text="Login", command=login_user_submit, bg='light green', fg='blue').grid(row=3, column=0,
                                                                                                columnspan=2)
-
-
 # ********************************************************
 def signup():
     global root_s
@@ -196,8 +212,6 @@ def signup():
                                                                                                                padx=50)
     Button(root_s, text='User Account', command=signup_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,
                                                                                                padx=20)
-
-
 def login():
     global root_l
     root_l = Toplevel()
@@ -215,7 +229,15 @@ def login():
                                                                                               padx=20)
 
 
-# Entrypage
+
+
+
+
+#Entrypage
+#mainroot
+root = Tk()
+root.geometry('200x100')
+root.title('EntryPage')
 Label(root, text='Create a new account?', font=('arial', 10, 'bold')).pack()
 b_signup = Button(root, text='Sign Up', command=signup, bg='light green', fg='blue').pack()
 Label(root, text='Account exists already?', font=('arial', 10, 'bold')).pack()
