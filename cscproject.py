@@ -3,7 +3,232 @@ import importlib
 from tkinter import Frame
 from PIL import ImageTk, Image
 from tkinter import messagebox
+#***********************************************************************************************************************
+'''
+def profile_user():
+    profile_user_window = Tk()
+    profile_user_window.title('Profile')
+    profile_user_window.geometry('150x170')
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    cur.execute('select * from user where username="{}"'.format(v))
+    res = cur.fetchall()
+    l1=list()
+    for j in range(len(res[0])):
+        l1.append(res[0][j])
+    print(l1)
+    Label(profile_user_window, text='Username').grid(row=0, column=0)
+    Label(profile_user_window, text='Password').grid(row=1, column=0)
+    Label(profile_user_window, text='Name').grid(row=2, column=0)
+    Label(profile_user_window, text='Age').grid(row=3, column=0)
+    Label(profile_user_window, text='Address').grid(row=5, column=0)
+    Label(profile_user_window, text='Pincode').grid(row=6, column=0)
 
+    Label(profile_user_window, text=l1[0]).grid(row=0, column=1)
+    Label(profile_user_window, text=l1[1]).grid(row=1, column=1)
+    Label(profile_user_window, text=l1[2]).grid(row=2, column=1)
+    Label(profile_user_window, text=l1[3]).grid(row=3, column=1)
+    Label(profile_user_window, text=l1[4]).grid(row=4, column=1)
+    Label(profile_user_window, text=l1[5]).grid(row=5, column=1)
+def change_username_user():
+    def change_username_user_submit_command(nu):
+        global v
+        import mysql.connector as sql
+        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+        cur = con.cursor()
+        #
+        cur.execute("select * from user where username='{}'".format(nu))
+        res = cur.fetchall()
+        if cur.rowcount == 0:
+            cur.execute('update user set username="{}" where username="{}"'.format(nu, v))
+            v = nu
+            change_username_window_user.destroy()
+        else:
+            messagebox.showwarning(" ", "Username already exists!")
+
+    change_username_window_user = Tk()
+    change_username_window_user.geometry('240x67')
+    change_username_window_user.title('Change Username')
+    Label(change_username_window_user,text='Previous Username: ').grid(row=0,column=0)
+    Label(change_username_window_user,text='{}'.format(v)).grid(row=0,column=1)
+    Label(change_username_window_user,text='New Username').grid(row=1,column=0)
+    new_username = Entry(change_username_window_user)
+    new_username.grid(row=1, column=1)
+    Button(change_username_window_user,text='Submit',command=lambda : change_username_user_submit_command(new_username.get())).grid(row=2,column=0,columnspan=2)
+def change_password_user():
+    global z
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    cur.execute('select password from user where username = "{}"'.format(v))
+    z = cur.fetchall()
+    z = z[0][0]
+    def change_password_user_submit_command(np):
+        import mysql.connector as sql
+        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+        cur = con.cursor()
+        cur.execute('update user set password = "{}" where username ="{}"'.format(np,v))
+        change_password_window_user.destroy()
+    change_password_window_user = Tk()
+    change_password_window_user.title('Change Password')
+    change_password_window_user.geometry('240x67')
+    Label(change_password_window_user, text='Previous Password: ').grid(row=0, column=0)
+    Label(change_password_window_user, text='{}'.format(z)).grid(row=0, column=1)
+    Label(change_password_window_user, text='New Password').grid(row=1, column=0)
+    new_password = Entry(change_password_window_user)
+    new_password.grid(row=1, column=1)
+    Button(change_password_window_user, text='Submit',command=lambda: change_password_user_submit_command(new_password.get())).grid(row=2, column=0,columnspan=2)
+
+def sign_out():
+    main_window.destroy()
+    ls()
+def mainwindow_user(u):
+    global v
+    global main_window
+    v = u
+    print(u)
+    main_window = Tk()
+    main_window.title('Main window')
+    main_window.geometry('1920x1080')
+    main_window.state('zoomed')
+    # Frame
+    frame1 = Frame(main_window, bg='PaleGreen1', highlightbackground="dark green", highlightthickness=1)
+    frame1.pack(side=TOP, fill=X)
+    Label(frame1, text='*Name*', bg='PaleGreen1', font=('TkDefaultFont', 16)).pack(side='left', padx=10, pady=5)
+    #Menu
+    dropmenu = Menubutton(frame1, text='  Menu  ', bg='Light blue', font=('TkDefaultFont', 16), relief=SOLID)
+    dropmenu.menu = Menu(dropmenu)
+    dropmenu['menu'] = dropmenu.menu
+
+    dropmenu.menu.add_command(label='Profile',command=profile_user)
+    dropmenu.menu.add_command(label='Username Reset',command=change_username_user)
+    dropmenu.menu.add_command(label='Password Reset',command=change_password_user)
+    dropmenu.menu.add_command(label='Sign Out',command=sign_out)
+
+    dropmenu.pack(side=RIGHT, padx=10, pady=5)
+    # Image
+    bgimg = ImageTk.PhotoImage(Image.open('bgimage.jpg'))
+    Label(main_window, image=bgimg).pack(side=TOP, fill=X)
+
+    # Main window features
+    main_window.mainloop()'''
+
+def profile_user():
+    global d11
+    profile_user_window= Toplevel()
+    profile_user_window.title('Profile')
+    profile_user_window.geometry('150x170')
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    cur.execute('select * from user where username="{}"'.format(v))
+    res = cur.fetchall()
+    l=list()
+    for i in range(len(res[0])):
+        l.append(res[0][i])
+    print(l)
+    Label(profile_user_window, text='Username').grid(row=0, column=0)
+    Label(profile_user_window, text='Password').grid(row=1, column=0)
+    Label(profile_user_window, text='Name').grid(row=2, column=0)
+    Label(profile_user_window, text='Age').grid(row=3, column=0)
+    Label(profile_user_window, text='Address').grid(row=5, column=0)
+    Label(profile_user_window, text='Pincode').grid(row=6, column=0)
+
+    Label(profile_user_window, text=l[0]).grid(row=0, column=1)
+    Label(profile_user_window, text=l[1]).grid(row=1, column=1)
+    Label(profile_user_window, text=l[2]).grid(row=2, column=1)
+    Label(profile_user_window, text=l[3]).grid(row=3, column=1)
+    Label(profile_user_window, text=l[4]).grid(row=4, column=1)
+    Label(profile_user_window, text=l[5]).grid(row=5, column=1)
+
+def change_username_user():
+    def change_username_user_submit_command(nu):
+        global v
+        import mysql.connector as sql
+        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+        cur = con.cursor()
+        #
+        cur.execute("select * from user where username='{}'".format(nu))
+        res = cur.fetchall()
+        if cur.rowcount == 0:
+            cur.euecute('update user set username="{}" where username="{}"'.format(nu, v))
+            v = nu
+            change_username_window_user.destroy()
+        else:
+            messagebox.showwarning(" ", "Username already exists!")
+
+    change_username_window_user = Tk()
+    change_username_window_user.geometry('240x67')
+    change_username_window_user.title('Change Username')
+    Label(change_username_window_user,text='Previous Username: ').grid(row=0,column=0)
+    Label(change_username_window_user,text='"{}"'.format(v)).grid(row=0,column=1)
+    Label(change_username_window_user,text='New Username').grid(row=1,column=0)
+    new_username = Entry(change_username_window_user)
+    new_username.grid(row=1, column=1)
+    Button(change_username_window_user,text='Submit',command=lambda : change_username_user_submit_command(new_username.get())).grid(row=2,column=0,columnspan=2)
+def change_password_user():
+    global w
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    cur.execute('select password from user where username = "{}"'.format(v))
+    w = cur.fetchall()
+    print(v)
+    w = w[0][0]
+
+    def change_password_user_submit_command(np):
+        import mysql.connector as sql
+        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+        cur = con.cursor()
+        cur.execute('update user set password = "{}" where username ="{}"'.format(np,v))
+        change_password_window_user.destroy()
+    change_password_window_user = Tk()
+    change_password_window_user.title('Change Password')
+    change_password_window_user.geometry('240x67')
+    Label(change_password_window_user, text='Previous Password: ').grid(row=0, column=0)
+    Label(change_password_window_user, text='{}'.format(w)).grid(row=0, column=1)
+    Label(change_password_window_user, text='New Password').grid(row=1, column=0)
+    new_password = Entry(change_password_window_user)
+    new_password.grid(row=1, column=1)
+    Button(change_password_window_user, text='Submit',command=lambda: change_password_user_submit_command(new_password.get())).grid(row=2, column=0,columnspan=2)
+
+def sign_out():
+    main_window.destroy()
+    ls()
+def mainwindow_user(u):
+    global v
+    global main_window
+    v = u
+    print(v)
+    main_window = Tk()
+    main_window.title('Main window')
+    main_window.geometry('1920x1080')
+    main_window.state('zoomed')
+    # Frame
+    frame1 = Frame(main_window, bg='PaleGreen1', highlightbackground="dark green", highlightthickness=1)
+    frame1.pack(side=TOP, fill=X)
+    Label(frame1, text='*Name*', bg='PaleGreen1', font=('TkDefaultFont', 16)).pack(side='left', padx=10, pady=5)
+    #Menu
+    dropmenu = Menubutton(frame1, text='  Menu  ', bg='Light blue', font=('TkDefaultFont', 16), relief=SOLID)
+    dropmenu.menu = Menu(dropmenu)
+    dropmenu['menu'] = dropmenu.menu
+
+    dropmenu.menu.add_command(label='Profile',command=profile_user)
+    dropmenu.menu.add_command(label='Username Reset',command=change_username_user)
+    dropmenu.menu.add_command(label='Password Reset',command=change_password_user)
+    dropmenu.menu.add_command(label='Sign Out',command=sign_out)
+
+    dropmenu.pack(side=RIGHT, padx=10, pady=5)
+    # Image
+    bgimg = ImageTk.PhotoImage(Image.open('bgimage.jpg'))
+    Label(main_window, image=bgimg).pack(side=TOP, fill=X)
+
+    # Main window features
+    main_window.mainloop()
+
+
+#************************************************************************************************************************
 
 def profile_professional():
     global c11
@@ -40,19 +265,49 @@ def change_username_professional():
         import mysql.connector as sql
         con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
         cur = con.cursor()
-        cur.execute('update professional set username="{}" where username="{}"'.format(nu, v))
-        v = nu
-        change_username_window_professional.destroy()
+        #
+        cur.execute("select * from professional where username='{}'".format(nu))
+        res = cur.fetchall()
+        if cur.rowcount == 0:
+            cur.euecute('update professional set username="{}" where username="{}"'.format(nu, v))
+            v = nu
+            change_username_window_professional.destroy()
+        else:
+            messagebox.showwarning(" ", "Username already exists!")
 
     change_username_window_professional = Tk()
     change_username_window_professional.geometry('240x67')
     change_username_window_professional.title('Change Username')
     Label(change_username_window_professional,text='Previous Username: ').grid(row=0,column=0)
-    Label(change_username_window_professional,text='{}'.format(v)).grid(row=0,column=1)
+    Label(change_username_window_professional,text='"{}"'.format(v)).grid(row=0,column=1)
     Label(change_username_window_professional,text='New Username').grid(row=1,column=0)
     new_username = Entry(change_username_window_professional)
     new_username.grid(row=1, column=1)
     Button(change_username_window_professional,text='Submit',command=lambda : change_username_professional_submit_command(new_username.get())).grid(row=2,column=0,columnspan=2)
+def change_password_professional():
+    global w
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    cur.execute('select password from professional where username = "{}"'.format(v))
+    w = cur.fetchall()
+    w = w[0][0]
+    def change_password_professional_submit_command(np):
+        import mysql.connector as sql
+        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+        cur = con.cursor()
+        cur.execute('update professional set password = "{}" where username ="{}"'.format(np,v))
+        change_password_window_professional.destroy()
+    change_password_window_professional = Tk()
+    change_password_window_professional.title('Change Password')
+    change_password_window_professional.geometry('240x67')
+    Label(change_password_window_professional, text='Previous Password: ').grid(row=0, column=0)
+    Label(change_password_window_professional, text='{}'.format(w)).grid(row=0, column=1)
+    Label(change_password_window_professional, text='New Password').grid(row=1, column=0)
+    new_password = Entry(change_password_window_professional)
+    new_password.grid(row=1, column=1)
+    Button(change_password_window_professional, text='Submit',command=lambda: change_password_professional_submit_command(new_password.get())).grid(row=2, column=0,columnspan=2)
+
 def sign_out():
     main_window.destroy()
     ls()
@@ -75,7 +330,7 @@ def mainwindow_professional(u):
 
     dropmenu.menu.add_command(label='Profile',command=profile_professional)
     dropmenu.menu.add_command(label='Username Reset',command=change_username_professional)
-    dropmenu.menu.add_command(label='Password Reset')
+    dropmenu.menu.add_command(label='Password Reset',command=change_password_professional)
     dropmenu.menu.add_command(label='Sign Out',command=sign_out)
 
     dropmenu.pack(side=RIGHT, padx=10, pady=5)
@@ -199,11 +454,13 @@ def ls():
                     root.destroy()
                     mainwindow_professional(c11)
     def login_user_submit():
+        global d11
         import mysql.connector as sql
         con = sql.connect(host="localhost", user="root", password="2810", database="kdproject", autocommit=True)
         cur = con.cursor()
         cur.execute('select * from user where username="{}"'.format(d1.get()))
         res = cur.fetchall()
+        d11= d1.get()
         if cur.rowcount == 0:
             messagebox.showwarning(" ", "Username does not exist!")
         else:
@@ -214,6 +471,9 @@ def ls():
                     root_lu.destroy()
                     root_l.destroy()
                     root.destroy()
+                    print(d11)
+                    mainwindow_user(d11)
+
     # login professional and user
     def login_professional():
         global root_lp
@@ -232,9 +492,10 @@ def ls():
         c22=c2.get()
         Button(root_lp, text="Login", command=login_professional_submit, bg='light green', fg='blue').grid(row=3, column=0,
                                                                                                            columnspan=2)
+        print(c11)
     def login_user():
         global root_lu
-        global d1, d2
+        global d1, d2, d11, d22
         root_lu = Toplevel()
         root_lu.geometry("200x150")
         root_lu.title("Professional Login")
@@ -245,9 +506,12 @@ def ls():
         Label(root_lu, text="Enter Password").grid(row=1, column=0)
         d2 = Entry(root_lu, show="*")
         d2.grid(row=1, column=1)
-
+        d11 = StringVar()
+        d11 = d1.get()
+        d22 = d2.get()
         Button(root_lu, text="Login", command=login_user_submit, bg='light green', fg='blue').grid(row=3, column=0,
                                                                                                    columnspan=2)
+        print(d11)
     # ********************************************************
     def signup():
         global root_s
@@ -290,8 +554,6 @@ def ls():
     Label(root, text='Account exists already?', font=('arial', 10, 'bold')).pack()
     b_login = Button(root, text='Login', command=login, bg='light green', fg='blue').pack()
     root.mainloop()
-
-
 ls()
 
 
