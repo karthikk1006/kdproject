@@ -1,5 +1,4 @@
 from tkinter import *
-import importlib
 from tkinter import Frame
 from PIL import ImageTk, Image
 from tkinter import messagebox
@@ -118,7 +117,7 @@ def profile_user():
     global d11
     profile_user_window= Toplevel()
     profile_user_window.title('Profile')
-    profile_user_window.geometry('150x170')
+    profile_user_window.geometry('160x230')
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
@@ -128,19 +127,19 @@ def profile_user():
     for i in range(len(res[0])):
         l.append(res[0][i])
     print(l)
-    Label(profile_user_window, text='Username').grid(row=0, column=0)
-    Label(profile_user_window, text='Password').grid(row=1, column=0)
-    Label(profile_user_window, text='Name').grid(row=2, column=0)
-    Label(profile_user_window, text='Age').grid(row=3, column=0)
-    Label(profile_user_window, text='Address').grid(row=5, column=0)
-    Label(profile_user_window, text='Pincode').grid(row=6, column=0)
+    Label(profile_user_window, text='Username', font=('TkDefaultFont', 11)).grid(row=0, column=0, padx=10, pady=5)
+    Label(profile_user_window, text='Password',font=('TkDefaultFont',11)).grid(row=1, column=0,padx=10,pady=5)
+    Label(profile_user_window, text='Name',font=('TkDefaultFont',11)).grid(row=2, column=0,padx=10,pady=5)
+    Label(profile_user_window, text='Age',font=('TkDefaultFont',11)).grid(row=3, column=0,padx=10,pady=5)
+    Label(profile_user_window, text='Address',font=('TkDefaultFont',11)).grid(row=4, column=0,padx=10,pady=5)
+    Label(profile_user_window, text='Pincode',font=('TkDefaultFont',11)).grid(row=5, column=0,padx=10,pady=5)
 
-    Label(profile_user_window, text=l[0]).grid(row=0, column=1)
-    Label(profile_user_window, text=l[1]).grid(row=1, column=1)
-    Label(profile_user_window, text=l[2]).grid(row=2, column=1)
-    Label(profile_user_window, text=l[3]).grid(row=3, column=1)
-    Label(profile_user_window, text=l[4]).grid(row=4, column=1)
-    Label(profile_user_window, text=l[5]).grid(row=5, column=1)
+    Label(profile_user_window, text=l[0],font=('TkDefaultFont',11)).grid(row=0, column=1,padx=10,pady=5)
+    Label(profile_user_window, text=l[1],font=('TkDefaultFont',11)).grid(row=1, column=1,padx=10,pady=5)
+    Label(profile_user_window, text=l[2],font=('TkDefaultFont',11)).grid(row=2, column=1,padx=10,pady=5)
+    Label(profile_user_window, text=l[3],font=('TkDefaultFont',11)).grid(row=3, column=1,padx=10,pady=5)
+    Label(profile_user_window, text=l[4],font=('TkDefaultFont',11)).grid(row=4, column=1,padx=10,pady=5)
+    Label(profile_user_window, text=l[5],font=('TkDefaultFont',11)).grid(row=5, column=1,padx=10,pady=5)
 
 def change_username_user():
     def change_username_user_submit_command(nu):
@@ -152,7 +151,7 @@ def change_username_user():
         cur.execute("select * from user where username='{}'".format(nu))
         res = cur.fetchall()
         if cur.rowcount == 0:
-            cur.euecute('update user set username="{}" where username="{}"'.format(nu, v))
+            cur.execute('update user set username="{}" where username="{}"'.format(nu, v))
             v = nu
             change_username_window_user.destroy()
         else:
@@ -162,7 +161,7 @@ def change_username_user():
     change_username_window_user.geometry('240x67')
     change_username_window_user.title('Change Username')
     Label(change_username_window_user,text='Previous Username: ').grid(row=0,column=0)
-    Label(change_username_window_user,text='"{}"'.format(v)).grid(row=0,column=1)
+    Label(change_username_window_user,text='{}'.format(v)).grid(row=0,column=1)
     Label(change_username_window_user,text='New Username').grid(row=1,column=0)
     new_username = Entry(change_username_window_user)
     new_username.grid(row=1, column=1)
@@ -234,7 +233,7 @@ def profile_professional():
     global c11
     profile_professional_window= Toplevel()
     profile_professional_window.title('Profile')
-    profile_professional_window.geometry('150x170')
+    profile_professional_window.geometry('160x230')
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
@@ -244,21 +243,21 @@ def profile_professional():
     for i in range(len(res[0])):
         l.append(res[0][i])
     print(l)
-    Label(profile_professional_window, text='Username').grid(row=0, column=0)
-    Label(profile_professional_window, text='Password').grid(row=1, column=0)
-    Label(profile_professional_window, text='Name').grid(row=2, column=0)
-    Label(profile_professional_window, text='Age').grid(row=3, column=0)
-    Label(profile_professional_window, text='Profession').grid(row=4, column=0)
-    Label(profile_professional_window, text='Address').grid(row=5, column=0)
-    Label(profile_professional_window, text='Pincode').grid(row=6, column=0)
+    Label(profile_professional_window, text='Username',font=('TkDefaultFont',11)).grid(row=0, column=0,padx=10,pady=5)
+    Label(profile_professional_window, text='Password',font=('TkDefaultFont',11)).grid(row=1, column=0,padx=10,pady=5)
+    Label(profile_professional_window, text='Name',font=('TkDefaultFont',11)).grid(row=2, column=0,padx=10,pady=5)
+    Label(profile_professional_window, text='Age',font=('TkDefaultFont',11)).grid(row=3, column=0,padx=10,pady=5)
+    Label(profile_professional_window, text='Profession',font=('TkDefaultFont',11)).grid(row=4, column=0,padx=10,pady=5)
+    Label(profile_professional_window, text='Address',font=('TkDefaultFont',11)).grid(row=5, column=0,padx=10,pady=5)
+    Label(profile_professional_window, text='Pincode',font=('TkDefaultFont',11)).grid(row=6, column=0,padx=10,pady=5)
 
-    Label(profile_professional_window, text=l[0]).grid(row=0, column=1)
-    Label(profile_professional_window, text=l[1]).grid(row=1, column=1)
-    Label(profile_professional_window, text=l[2]).grid(row=2, column=1)
-    Label(profile_professional_window, text=l[3]).grid(row=3, column=1)
-    Label(profile_professional_window, text=l[4]).grid(row=4, column=1)
-    Label(profile_professional_window, text=l[5]).grid(row=5, column=1)
-    Label(profile_professional_window, text=l[6]).grid(row=6, column=1)
+    Label(profile_professional_window, text=l[0],font=('TkDefaultFont',11)).grid(row=0, column=1,padx=10,pady=5)
+    Label(profile_professional_window, text=l[1],font=('TkDefaultFont',11)).grid(row=1, column=1,padx=10,pady=5)
+    Label(profile_professional_window, text=l[2],font=('TkDefaultFont',11)).grid(row=2, column=1,padx=10,pady=5)
+    Label(profile_professional_window, text=l[3],font=('TkDefaultFont',11)).grid(row=3, column=1,padx=10,pady=5)
+    Label(profile_professional_window, text=l[4],font=('TkDefaultFont',11)).grid(row=4, column=1,padx=10,pady=5)
+    Label(profile_professional_window, text=l[5],font=('TkDefaultFont',11)).grid(row=5, column=1,padx=10,pady=5)
+    Label(profile_professional_window, text=l[6],font=('TkDefaultFont',11)).grid(row=6, column=1,padx=10,pady=5)
 def change_username_professional():
     def change_username_professional_submit_command(nu):
         global v
@@ -333,13 +332,16 @@ def mainwindow_professional(u):
     dropmenu.menu.add_command(label='Password Reset',command=change_password_professional)
     dropmenu.menu.add_command(label='Sign Out',command=sign_out)
 
+
     dropmenu.pack(side=RIGHT, padx=10, pady=5)
     # Image
     bgimg = ImageTk.PhotoImage(Image.open('bgimage.jpg'))
-    Label(main_window, image=bgimg).pack(side=TOP, fill=X)
+    Label(main_window, image=bgimg).pack(side=TOP,fill=X)
 
     # Main window features
-    main_window.mainloop()
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
 
 
 
@@ -479,7 +481,7 @@ def ls():
         global root_lp
         global c1, c2, c11, c22
         root_lp = Toplevel()
-        root_lp.geometry("200x150")
+        root_lp.geometry("220x100")
         root_lp.title("Professional Login")
         # details
         Label(root_lp, text="Enter Username").grid(row=0, column=0)
@@ -490,14 +492,13 @@ def ls():
         c2.grid(row=1, column=1)
         c11=c1.get()
         c22=c2.get()
-        Button(root_lp, text="Login", command=login_professional_submit, bg='light green', fg='blue').grid(row=3, column=0,
-                                                                                                           columnspan=2)
+        Button(root_lp, text="Login", command=login_professional_submit, bg='light green', fg='blue').grid(row=3, column=0,columnspan=2)
         print(c11)
     def login_user():
         global root_lu
         global d1, d2, d11, d22
         root_lu = Toplevel()
-        root_lu.geometry("200x150")
+        root_lu.geometry("220x100")
         root_lu.title("Professional Login")
         # details
         Label(root_lu, text="Enter Username").grid(row=0, column=0)
@@ -509,8 +510,7 @@ def ls():
         d11 = StringVar()
         d11 = d1.get()
         d22 = d2.get()
-        Button(root_lu, text="Login", command=login_user_submit, bg='light green', fg='blue').grid(row=3, column=0,
-                                                                                                   columnspan=2)
+        Button(root_lu, text="Login", command=login_user_submit, bg='light green', fg='blue').grid(row=3, column=0,columnspan=2)
         print(d11)
     # ********************************************************
     def signup():
@@ -518,32 +518,20 @@ def ls():
         root_s = Toplevel()
         root_s.geometry('400x250')
         root_s.title('Sign Up')
-        Label(root_s, text='What kind of an account do you want to create?', font=('arial', 10, 'bold')).grid(row=0,
-                                                                                                              column=0,
-                                                                                                              columnspan=2)
+        Label(root_s, text='What kind of an account do you want to create?', font=('arial', 10, 'bold')).grid(row=0,column=0,columnspan=2)
 
         # Buttons
-        Button(root_s, text='Professional Account', command=signup_professional, bg='light green', fg='blue').grid(row=2,
-                                                                                                                   column=0,
-                                                                                                                   pady=10,
-                                                                                                                   padx=50)
-        Button(root_s, text='User Account', command=signup_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,
-                                                                                                   padx=20)
+        Button(root_s, text='Professional Account', command=signup_professional, bg='light green', fg='blue').grid(row=2,column=0,pady=1,padx=50)
+        Button(root_s, text='User Account', command=signup_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,padx=20)
     def login():
         global root_l
         root_l = Toplevel()
         root_l.geometry('400x250')
         root_l.title('Login')
-        Label(root_l, text='With which account do you want to login with?', font=('arial', 10, 'bold')).grid(row=0,
-                                                                                                             column=0,
-                                                                                                             columnspan=2)
+        Label(root_l, text='With which account do you want to login with?', font=('arial', 10, 'bold')).grid(row=0,column=0,columnspan=2)
 
-        Button(root_l, text='Professional Account', command=login_professional, bg='light green', fg='blue').grid(row=2,
-                                                                                                                  column=0,
-                                                                                                                  pady=10,
-                                                                                                                  padx=50)
-        Button(root_l, text='User Account', command=login_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,
-                                                                                                  padx=20)
+        Button(root_l, text='Professional Account', command=login_professional, bg='light green', fg='blue').grid(row=2,column=0,pady=10,padx=50)
+        Button(root_l, text='User Account', command=login_user, bg='light green', fg='blue').grid(row=2, column=1, pady=10,padx=20)
 
     #MAINROOT(askinf for signup or login)
     root = Tk()
