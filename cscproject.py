@@ -342,6 +342,7 @@ def mainwindow_professional(u):
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
+    print()
 
 
 
