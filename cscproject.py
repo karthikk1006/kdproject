@@ -127,16 +127,101 @@ def activity():
 def requests():
     requests_window = Toplevel()
     requests_window.title('Requests')
-    requests_window.geometry('1000x600')
+    requests_window.geometry('910x600')
 
     bg2 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas11 = Canvas(requests_window, width=1000, height=600)
     canvas11.pack(fill='both', expand=True)
     canvas11.create_image(500, 300, image=bg2, anchor="center")
+    #username(u)(r), address(u), locationcode(u), job desc(r), date(r), phoneno(u)(u)
+
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    tree = ttk.Treeview(requests_window)
+    tree['columns'] = ('no', 'name', 'address', 'locationcode','phno','job desc','date')
+    tree.column('#0', width=0, stretch=NO)
+    tree.column('no', width=120, minwidth=25)
+    tree.column('name', width=120, minwidth=25)
+    tree.column('address', width=120, minwidth=25)
+    tree.column('locationcode', width=120, minwidth=25)
+    tree.column('phno', width=120, minwidth=25)
+    tree.column('job desc', width=120, minwidth=25)
+    tree.column('date', width=120, minwidth=25)
+
+    tree.heading('#0', text='', anchor=CENTER)
+    tree.heading('no', text='SNo', anchor=CENTER)
+    tree.heading('name', text='Name', anchor=CENTER)
+    tree.heading('address', text='Address', anchor=CENTER)
+    tree.heading('locationcode', text='Location Code', anchor=CENTER)
+    tree.heading('phno', text='Phone Number', anchor=CENTER)
+    tree.heading('job desc', text='Job Description', anchor=CENTER)
+    tree.heading('date', text='Date', anchor=CENTER)
+    canvas11.create_window(450,150,window=tree)
+    cur.execute("select unuser,jd,date from requests where unprofessional = '{}'".format(v))
+    res1 = cur.fetchall()
+    L=[]
+    for i in res1:
+        cur.execute("select address, locationcode, phoneno from user where username = '{}'".format(i[0]))
+        res2 = cur.fetchall()
+        t = (i[0],) + res2[0] + (i[1],i[2])
+        L.append(t)
+
+    for i in range(len(L)):
+        x = (i + 1,) + L[i]
+        tree.insert(parent='', index='end', iid=i, values=x)
+
+
+    '''cur.execute('select address, locationcode, phoneno from user where username = {}
+    res2 = cur.fetchall()
+    for i in range(len(res1)):
+        t+=(i+1,res1[i][0]) + res2[i] + (res1[i][1], res1[i][2])
+
+    for i in range(len(t)):
+        tree.insert(parent='', index='end', iid=i, values=t[i])'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     requests_window.mainloop()
 def search_service():
     global a
+    def selection_record(tree):
+        '''tree.selection will give us the list of all the data that has been selected.
+        tree.item will give us a dictionary which has keys as column headings and values as record values of each row.'''
+        # username(p), username(u),date ,job desc
+        selected_item = tree.selection()[0]
+        userprof = tree.item(selected_item)['values'][1] #this is the username of the professional that the user has selected
+        import mysql.connector as sql
+        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+        cur = con.cursor()
+        cur.execute("insert into requests values('{}','{}','{}','{}',{})".format(userprof,v,date.get(),jd.get(),0))
+
+
+
     def search_service_submit(k):
+        global date, jd
+
         if k == 'Select from the listed jobs/services':
             messagebox.showwarning(" ", "SELECT AN APPROPRIATE SERVICE!")
             search_service_window.destroy()
@@ -144,12 +229,11 @@ def search_service():
         else:
             search_service_window.destroy()
             search_service_submit_window = Toplevel()
-            search_service_submit_window.geometry('600x500')
+            search_service_submit_window.geometry('700x580+200+100')
             canvasx = Canvas(search_service_submit_window, width=1000, height=600)
             canvasx.pack(fill='both', expand=True)
             #bg3 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
             canvasx.create_image(500, 300, image=bg3, anchor="center")
-            Label(search_service_submit_window,text='hello').pack()
             #username address locationcode date jobdesc sendreq
             import mysql.connector as sql
             con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
@@ -177,22 +261,23 @@ def search_service():
             for i in range(len(res)):
                 x = (i+1,)+res[i]
                 tree.insert(parent='', index='end', iid=i ,values=x)
-            canvasx.create_window(500, 200, window = tree)
-
-
-
-
-
-
-
-            
-
-
+            canvasx.create_window(350, 150, window = tree)
+            canvasx.create_text(84,335,text ='Enter date :',font=('TkDefaultFont',11,'bold'))
+            date = Entry(search_service_submit_window)
+            date.insert(0,'Format : YYYY/MM/DD')
+            date.place(x=130,y=320,width=150,height=30)
+            canvasx.create_text(84, 370, text='Enter Job Description:', font=('TkDefaultFont', 11, 'bold'))
+            jd = Entry(search_service_submit_window)
+            jd.place(x=165, y=357, width=400, height=150)
+            '''Taking data for further use'''
+            # username(p), username(u),date ,job desc
+            z = Button(search_service_submit_window, text='Send Request',bg='light green', fg='blue',height=2,width=20,command=lambda : selection_record(tree))
+            z.place(x=260,y=530)
 
 
     search_service_window = Toplevel()
     search_service_window.title('Service search')
-    search_service_window.geometry('500x225')
+    search_service_window.geometry('500x225+410+230')
 
     bg3 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas12 = Canvas(search_service_window, width=1000, height=600)
@@ -217,8 +302,10 @@ def search_service():
         n.set('Select from the listed jobs/services')
         menu = OptionMenu(search_service_window, n, *t)
         menu.config(font=('TkDefaultFont',12))
+
         #menu1 = self.nametowidget(menu.menuname)
         #menu1.config(font=('TkDefaultFont',12))
+
         canvas12.create_window(250,150,window=menu)
         '''if n.get() != 'Select from the listed jobs/services':
             b = Button(search_service_window,text='Search',bg='light green', fg='blue',command=lambda: search_service_submit(n.get()))
@@ -232,21 +319,21 @@ def search_service():
         canvas12.create_text(295, 50,
                              text='With the help of location code you provided,\n we have filtered all types of professions\n available in your location.',
                              font=('TkDefaultFont', 15, 'bold'))
-        search_service_window.geometry('580x225')
+        search_service_window.geometry('580x225+410+230')
         canvas12.create_text(290, 150, text='Sorry! There are no professionals in your or near your location.\n Please try again.',font=('TkDefaultFont',14,"italic"),fill='red')
 
     search_service_window.mainloop()
 
-def locationcode():
-    lc_window =Toplevel()
-    lc_window.title('Location Code selection')
-    lc_window.geometry('1000x600')
+def request_status():
+    rs_window =Toplevel()
+    rs_window.title('Location Code selection')
+    rs_window.geometry('1000x600')
 
     bg4 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
-    canvas12 = Canvas(lc_window, width=1000, height=600)
+    canvas12 = Canvas(rs_window, width=1000, height=600)
     canvas12.pack(fill='both', expand=True)
     canvas12.create_image(500, 300, image=bg4, anchor="center")
-    lc_window.mainloop()
+    rs_window.mainloop()
 
 
 def profile_user():
@@ -369,8 +456,8 @@ def mainwindow_user(u):
     canvas.pack(fill='both', expand=True)
     canvas.create_image(960, 540, image=bg, anchor="center")
     canvas.create_text(500, 200, text="Sampletext\nSampletext\nSampletext\nSampletext",font=('TkDefaultFont',30,'bold'))
-    button1 = Button(main_window, text="Select Your Location Code",font=('arial',12,'bold'),height=3,width=30, bg='light green', fg='blue',command=locationcode)
-    button2 = Button(main_window, text="Search For Services",font=('arial',12,'bold'),height=3,width=30, bg='light green', fg='blue',command=search_service)
+    button2 = Button(main_window, text="Request Status",font=('arial',12,'bold'),height=3,width=30, bg='light green', fg='blue',command=request_status)
+    button1 = Button(main_window, text="Search For Services",font=('arial',12,'bold'),height=3,width=30, bg='light green', fg='blue',command=search_service)
     canvas.create_window(150, 400,anchor='nw',window=button1)
     canvas.create_window(550, 400,anchor='nw', window=button2)
 
@@ -379,7 +466,7 @@ def mainwindow_user(u):
     main_window.mainloop()
 
 
-#************************************************************************************************************************
+#***********************************************************************************************************************
 
 def profile_professional():
     global c11
@@ -608,21 +695,26 @@ def ls():
     def lc_refer():
         lc_refer_window = Tk()
         lc_refer_window.title('Location Codes')
-        lc_refer_window.geometry('600x600+460+260')
-        lc_frame = Frame(lc_refer_window, width=600, height=600)
+        lc_refer_window.geometry('290x300+460+260')
+        lc_frame1 = Frame(lc_refer_window, width=600, height=600)
+        lc_frame1.pack(fill=BOTH,expand=1)
 
-        Label(lc_refer_window,text='WHAT IS LOCATION CODE',font=('TkDefaultFont',12 ,'bold')).grid(row=0,column=0,columnspan=2)
-        Label(lc_refer_window, text='Every area has a particular numeric location code,\n which helps us reach to you at the earliest', font=('TkDefaultFont', 10)).grid(row=1, column=0,columnspan=2)
+        lc_canvas = Canvas(lc_frame1)
+        lc_canvas.pack(side=LEFT,fill=BOTH,expand=1)
+
+        scrollbar = ttk.Scrollbar(lc_frame1, orient=VERTICAL,command= lc_canvas.yview)
+        scrollbar.pack(side=RIGHT,fill=Y)
+        lc_canvas.configure(yscrollcommand=scrollbar.set)
+        lc_canvas.bind('<Configure>',lambda e: lc_canvas.configure(scrollregion = lc_canvas.bbox('all')))
+        lc_frame2 = Frame(lc_canvas)
+
+        lc_canvas.create_window(0,0,window =lc_frame2)
+        Label(lc_frame2,text='WHAT IS LOCATION CODE',font=('TkDefaultFont',12 ,'bold')).grid(row=0,column=0,columnspan=2)
+        Label(lc_frame2, text='Every area has a particular numeric location code,\n which helps us reach to you at the earliest', font=('TkDefaultFont', 10)).grid(row=1, column=0,columnspan=2)
 
         for i in range(len(lc)):
-            Label(lc_frame, text=lc[i][0]).grid(row= i, column=0)
-            Label(lc_frame, text=lc[i][1]).grid(row= i, column=1)
-
-        scrollbar = Scrollbar(lc_frame,orient=VERTICAL)
-        lc_frame.config(yscrollcommand=scrollbar.set)
-        scrollbar.config(command= lc_frame.yview)
-        scrollbar.pack(side=RIGHT, fill=Y)
-
+            Label(lc_frame2, text=lc[i][0]).grid(row=i+2, column=0)
+            Label(lc_frame2, text=lc[i][1]).grid(row=i+2, column=1)
 
 
         '''for i in range(len(lc)):
@@ -635,7 +727,7 @@ def ls():
     def signup_professional():
         global a1, a2, a3, a4, a5, a6, a7, a8, root_sp
         root_sp = Toplevel()
-        root_sp.geometry('280x220+440+240')
+        root_sp.geometry('280x240+440+240')
         root_sp.title('Create a professional account')
         # details
 
@@ -671,7 +763,7 @@ def ls():
     def signup_user():
         global b1, b2, b3, b4, b5, b6,b7, root_su
         root_su = Toplevel()
-        root_su.geometry('280x220+440+240')
+        root_su.geometry('280x240+440+240')
         root_su.title('Create a user account')
         # details
 
@@ -765,7 +857,7 @@ def ls():
         global d1, d2, d11, d22
         root_lu = Toplevel()
         root_lu.geometry("220x75+440+240")
-        root_lu.title("Professional Login")
+        root_lu.title("User Login")
         # details
         Label(root_lu, text="Enter Username").grid(row=0, column=0)
         d1 = Entry(root_lu)
