@@ -125,9 +125,51 @@ def activity():
     canvas12.create_image(960, 540, image=bg1, anchor="center")
     activity_window.mainloop()
 def requests():
+    def accept_request_submit(tree):
+        if len(tree.selection()) ==0:
+            messagebox.showwarning('',"You haven't selected a request to accept!")
+            requests_window.destroy()
+            requests()
+
+        else:
+            selected_item = tree.selection()[0]
+            unuser = tree.item(selected_item)['values'][1]  # this is the username of the user, who has sent the request, that has been accepted
+            date = tree.item(selected_item)['values'][6]
+            jdsc = tree.item(selected_item)['values'][5]
+
+            import mysql.connector as sql
+            con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+            cur = con.cursor()
+            cur.execute("update requests set status = 1 where unprofessional='{}' and unuser='{}' and date = '{}' and jd ='{}'".format(v,unuser,date,jdsc))
+
+            messagebox.showinfo('','Request has been accepted.')
+            requests_window.destroy()
+            requests()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     requests_window = Toplevel()
     requests_window.title('Requests')
-    requests_window.geometry('910x600')
+    requests_window.geometry('910x330')
 
     bg2 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas11 = Canvas(requests_window, width=1000, height=600)
@@ -170,15 +212,11 @@ def requests():
     for i in range(len(L)):
         x = (i + 1,) + L[i]
         tree.insert(parent='', index='end', iid=i, values=x)
+    butt = Button(requests_window, text='Accept Request',bg='light green', fg='blue',height=2,width=20,command = lambda: accept_request_submit(tree))
+    canvas11.create_window(455,285,window = butt)
 
 
-    '''cur.execute('select address, locationcode, phoneno from user where username = {}
-    res2 = cur.fetchall()
-    for i in range(len(res1)):
-        t+=(i+1,res1[i][0]) + res2[i] + (res1[i][1], res1[i][2])
 
-    for i in range(len(t)):
-        tree.insert(parent='', index='end', iid=i, values=t[i])'''
 
 
 
@@ -210,17 +248,28 @@ def search_service():
         '''tree.selection will give us the list of all the data that has been selected.
         tree.item will give us a dictionary which has keys as column headings and values as record values of each row.'''
         # username(p), username(u),date ,job desc
-        selected_item = tree.selection()[0]
-        userprof = tree.item(selected_item)['values'][1] #this is the username of the professional that the user has selected
-        import mysql.connector as sql
-        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
-        cur = con.cursor()
-        cur.execute("insert into requests values('{}','{}','{}','{}',{})".format(userprof,v,date.get(),jd.get(),0))
+
+        if len(tree.selection())==0:
+            messagebox.showwarning('',"You haven't selected a service provider! Select one to continue.")
+            search_service_submit_window.destroy()
+            search_service()
+        else:
+            selected_item = tree.selection()[0]
+            userprof = tree.item(selected_item)['values'][1] #this is the username of the professional that the user has selected
+            import mysql.connector as sql
+            con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+            cur = con.cursor()
+            cur.execute("insert into requests values('{}','{}','{}','{}',{})".format(userprof,v,date.get(),jd.get(),0))
+
+            messagebox.showinfo(" ", "Request successfully sent.")
+            search_service_submit_window.destroy()
+            search_service()
+
 
 
 
     def search_service_submit(k):
-        global date, jd
+        global date, jd, search_service_submit_window
 
         if k == 'Select from the listed jobs/services':
             messagebox.showwarning(" ", "SELECT AN APPROPRIATE SERVICE!")
@@ -803,11 +852,16 @@ def ls():
         cur.execute('select * from professional where username="{}"'.format(c1.get()))
         res = cur.fetchall()
         if cur.rowcount == 0:
+            root_lp.destroy()
+            root_l.destroy()
             messagebox.showwarning(" ", "Username does not exist!")
         else:
             for i in res:
                 if i[1] != c2.get():
+                    root_lp.destroy()
+                    root_l.destroy()
                     messagebox.showwarning(" ", "Incorrect password")
+
                 else:
                     root_lp.destroy()
                     root_l.destroy()
@@ -822,11 +876,16 @@ def ls():
         res = cur.fetchall()
         d11= d1.get()
         if cur.rowcount == 0:
+            root_lu.destroy()
+            root_l.destroy()
             messagebox.showwarning(" ", "Username does not exist!")
         else:
             for i in res:
                 if i[1] != d2.get():
+                    root_lu.destroy()
+                    root_l.destroy()
                     messagebox.showwarning(" ", "Incorrect password")
+
                 else:
                     root_lu.destroy()
                     root_l.destroy()
@@ -840,6 +899,7 @@ def ls():
         global c1, c2, c11, c22
         root_lp = Toplevel()
         root_lp.geometry("220x75+440+240")
+        root_lp.resizable(0, 0)
         root_lp.title("Professional Login")
         # details
         Label(root_lp, text="Enter Username").grid(row=0, column=0)
@@ -857,6 +917,7 @@ def ls():
         global d1, d2, d11, d22
         root_lu = Toplevel()
         root_lu.geometry("220x75+440+240")
+        root_lu.resizable(0, 0)
         root_lu.title("User Login")
         # details
         Label(root_lu, text="Enter Username").grid(row=0, column=0)
@@ -875,6 +936,7 @@ def ls():
         global root_s
         root_s = Toplevel()
         root_s.geometry('400x250+420+220')
+        root_s.resizable(0, 0)
         root_s.title('Sign Up')
         Label(root_s, text='What kind of an account do you want to create?', font=('arial', 10, 'bold')).grid(row=0,column=0,columnspan=2)
 
@@ -885,6 +947,7 @@ def ls():
         global root_l
         root_l = Toplevel()
         root_l.geometry('400x250+420+220')
+        root_l.resizable(0, 0)
         root_l.title('Login')
         Label(root_l, text='With which account do you want to login with?', font=('arial', 10, 'bold')).grid(row=0,column=0,columnspan=2)
 
@@ -894,6 +957,7 @@ def ls():
     #MAINROOT(askinf for signup or login)
     root = Tk()
     root.geometry('300x105+400+200')
+    root.resizable(0, 0)
     root.title('EntryPage')
     root.configure(bg='#C5FFFA')
     Label(root, text='Create a new account?', font=('arial', 12, 'bold'),bg='#C5FFFA').pack()
