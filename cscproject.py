@@ -118,6 +118,7 @@ def activity():
     activity_window = Toplevel()
     activity_window.title('Activity log')
     activity_window.geometry('1000x600')
+    activity_window.resizable(0, 0)
 
     bg1 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas12 = Canvas(activity_window, width=1920, height=1080)
@@ -170,6 +171,7 @@ def requests():
     requests_window = Toplevel()
     requests_window.title('Requests')
     requests_window.geometry('910x330')
+    requests_window.resizable(0, 0)
 
     bg2 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas11 = Canvas(requests_window, width=1000, height=600)
@@ -279,6 +281,7 @@ def search_service():
             search_service_window.destroy()
             search_service_submit_window = Toplevel()
             search_service_submit_window.geometry('700x580+200+100')
+            search_service_submit_window.resizable(0, 0)
             canvasx = Canvas(search_service_submit_window, width=1000, height=600)
             canvasx.pack(fill='both', expand=True)
             #bg3 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
@@ -327,7 +330,7 @@ def search_service():
     search_service_window = Toplevel()
     search_service_window.title('Service search')
     search_service_window.geometry('500x225+410+230')
-
+    search_service_window.resizable(0, 0)
     bg3 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas12 = Canvas(search_service_window, width=1000, height=600)
     canvas12.pack(fill='both', expand=True)
@@ -377,6 +380,7 @@ def request_status():
     rs_window =Toplevel()
     rs_window.title('Location Code selection')
     rs_window.geometry('1000x600')
+    rs_window.resizable(0, 0)
 
     bg4 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas12 = Canvas(rs_window, width=1000, height=600)
@@ -390,6 +394,7 @@ def profile_user():
     profile_user_window= Toplevel()
     profile_user_window.title('Profile')
     profile_user_window.geometry('160x230')
+    profile_user_window.resizable(0, 0)
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
@@ -434,6 +439,7 @@ def change_username_user():
     change_username_window_user = Tk()
     change_username_window_user.geometry('240x67')
     change_username_window_user.title('Change Username')
+    change_password_window_user.resizable(0, 0)
     Label(change_username_window_user,text='Previous Username: ').grid(row=0,column=0)
     Label(change_username_window_user,text='{}'.format(v)).grid(row=0,column=1)
     Label(change_username_window_user,text='New Username').grid(row=1,column=0)
@@ -459,6 +465,7 @@ def change_password_user():
     change_password_window_user = Tk()
     change_password_window_user.title('Change Password')
     change_password_window_user.geometry('240x67')
+    change_password_window_user.resizable(0, 0)
     Label(change_password_window_user, text='Previous Password: ').grid(row=0, column=0)
     Label(change_password_window_user, text='{}'.format(w)).grid(row=0, column=1)
     Label(change_password_window_user, text='New Password').grid(row=1, column=0)
@@ -477,6 +484,7 @@ def mainwindow_user(u):
     main_window = Tk()
     main_window.title('Main window')
     main_window.geometry('1000x600+150+50')
+    main_window.resizable(0, 0)
     #main_window.state('zoomed')
     # Frame
     frame1 = Frame(main_window, bg='PaleGreen1', highlightbackground="dark green", highlightthickness=1)
@@ -522,6 +530,7 @@ def profile_professional():
     profile_professional_window= Toplevel()
     profile_professional_window.title('Profile')
     profile_professional_window.geometry('160x230')
+    profile_professional_window.resizable(0, 0)
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
@@ -568,6 +577,7 @@ def change_username_professional():
     change_username_window_professional = Tk()
     change_username_window_professional.geometry('240x67')
     change_username_window_professional.title('Change Username')
+    change_username_window_professional.resizable(0, 0)
     Label(change_username_window_professional,text='Previous Username: ').grid(row=0,column=0)
     Label(change_username_window_professional,text='"{}"'.format(v)).grid(row=0,column=1)
     Label(change_username_window_professional,text='New Username').grid(row=1,column=0)
@@ -591,6 +601,7 @@ def change_password_professional():
     change_password_window_professional = Tk()
     change_password_window_professional.title('Change Password')
     change_password_window_professional.geometry('240x67')
+    change_password_window_professional.resizable(0, 0)
     Label(change_password_window_professional, text='Previous Password: ').grid(row=0, column=0)
     Label(change_password_window_professional, text='{}'.format(w)).grid(row=0, column=1)
     Label(change_password_window_professional, text='New Password').grid(row=1, column=0)
@@ -608,6 +619,7 @@ def mainwindow_professional(u):
     main_window = Tk()
     main_window.title('Main window')
     main_window.geometry('1000x600+150+50')
+    main_window.resizable(0, 0)
     #main_window.state('zoomed')
     # Frame
     frame1 = Frame(main_window, bg='PaleGreen1', highlightbackground="dark green", highlightthickness=1)
@@ -745,6 +757,7 @@ def ls():
         lc_refer_window = Tk()
         lc_refer_window.title('Location Codes')
         lc_refer_window.geometry('290x300+460+260')
+        lc_refer_window.resizable(0, 0)
         lc_frame1 = Frame(lc_refer_window, width=600, height=600)
         lc_frame1.pack(fill=BOTH,expand=1)
 
@@ -778,6 +791,7 @@ def ls():
         root_sp = Toplevel()
         root_sp.geometry('280x240+440+240')
         root_sp.title('Create a professional account')
+        root_sp.resizable(0, 0)
         # details
 
         Label(root_sp, text='Enter Username').grid(row=0, column=0)
@@ -814,6 +828,7 @@ def ls():
         root_su = Toplevel()
         root_su.geometry('280x240+440+240')
         root_su.title('Create a user account')
+        root_su.resizable(0, 0)
         # details
 
         Label(root_su, text='Enter Username').grid(row=0, column=0)
@@ -956,6 +971,8 @@ def ls():
 
     #MAINROOT(askinf for signup or login)
     root = Tk()
+    #sw=root.winfo_screenwidth(); sh=root.winfo_screenheight()
+    #root.geometry('300x105+{}+{}'.format(int((sw / 2) - 150), int((sh / 2) - 52.5)))
     root.geometry('300x105+400+200')
     root.resizable(0, 0)
     root.title('EntryPage')
