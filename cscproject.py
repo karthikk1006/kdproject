@@ -4,6 +4,16 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 from tkinter import ttk
 #1920x1080
+
+#account deletion - done
+#main page - done
+#Add disclaimer - done
+#delete req - done
+#location code, areas should be close to each other
+
+
+'''Disclaimer : If the service you are looking for is unavailable, no professionals are present at the moment in your vicinity providing that service. '''
+#professional table status check before and after accepting ( should display only if status is 0 )
 #***********************************************************************************************************************
 '''
 def profile_user():
@@ -134,7 +144,7 @@ def requests():
 
         else:
             selected_item = tree.selection()[0]
-            unuser = tree.item(selected_item)['values'][1]  # this is the username of the user, who has sent the request, that has been accepted
+            unuser = tree.item(selected_item)['values'][1]  #this is the username of the user, who has sent the request, that has been accepted
             date = tree.item(selected_item)['values'][6]
             jdsc = tree.item(selected_item)['values'][5]
 
@@ -146,25 +156,6 @@ def requests():
             messagebox.showinfo('','Request has been accepted.')
             requests_window.destroy()
             requests()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -202,7 +193,7 @@ def requests():
     tree.heading('job desc', text='Job Description', anchor=CENTER)
     tree.heading('date', text='Date', anchor=CENTER)
     canvas11.create_window(450,150,window=tree)
-    cur.execute("select unuser,jd,date from requests where unprofessional = '{}'".format(v))
+    cur.execute("select unuser,jd,date from requests where unprofessional = '{}' and status=0".format(v))
     res1 = cur.fetchall()
     L=[]
     for i in res1:
@@ -216,22 +207,6 @@ def requests():
         tree.insert(parent='', index='end', iid=i, values=x)
     butt = Button(requests_window, text='Accept Request',bg='light green', fg='blue',height=2,width=20,command = lambda: accept_request_submit(tree))
     canvas11.create_window(455,285,window = butt)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -329,7 +304,7 @@ def search_service():
 
     search_service_window = Toplevel()
     search_service_window.title('Service search')
-    search_service_window.geometry('500x225+410+230')
+    search_service_window.geometry('520x240+410+230')
     search_service_window.resizable(0, 0)
     bg3 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas12 = Canvas(search_service_window, width=1000, height=600)
@@ -347,9 +322,9 @@ def search_service():
     for i in res:
         if i[1] not in t:
             t.append(i[1])
-
+    canvas12.create_text(250, 35,text='Disclaimer : If the service you are looking for is unavailable,\n no professionals are present at the moment in your vicinity\n providing that service.',font=('TkDefaultFont', 11, 'bold'))
     if len(t)!=0:
-        canvas12.create_text(250, 65,text='With the help of location code you provided,\n we have filtered all types of professions\n available in your location.',font=('TkDefaultFont', 15, 'bold'))
+        canvas12.create_text(250, 110,text='With the help of location code you provided,\n we have filtered all types of professions\n available in your location.',font=('TkDefaultFont', 15, 'bold'))
         n = StringVar()
         n.set('Select from the listed jobs/services')
         menu = OptionMenu(search_service_window, n, *t)
@@ -358,14 +333,14 @@ def search_service():
         #menu1 = self.nametowidget(menu.menuname)
         #menu1.config(font=('TkDefaultFont',12))
 
-        canvas12.create_window(250,150,window=menu)
+        canvas12.create_window(250,175,window=menu)
         '''if n.get() != 'Select from the listed jobs/services':
             b = Button(search_service_window,text='Search',bg='light green', fg='blue',command=lambda: search_service_submit(n.get()))
             canvas12.create_window(250,200,window=b)
         else:
             messagebox.showwarning(" ", "SELECT AN APPROPRIATE SERVICE!")'''
         b = Button(search_service_window, text='Search', bg='light green', fg='blue',command=lambda: search_service_submit(n.get()))
-        canvas12.create_window(250, 200, window=b)
+        canvas12.create_window(250, 220, window=b)
 
     else:
         canvas12.create_text(295, 50,
@@ -379,13 +354,42 @@ def search_service():
 def request_status():
     rs_window =Toplevel()
     rs_window.title('Location Code selection')
-    rs_window.geometry('1000x600')
+    rs_window.geometry('510x400')
     rs_window.resizable(0, 0)
 
     bg4 = ImageTk.PhotoImage(Image.open('NewImage2.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas12 = Canvas(rs_window, width=1000, height=600)
     canvas12.pack(fill='both', expand=True)
     canvas12.create_image(500, 300, image=bg4, anchor="center")
+    # sno, name, date, status
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    cur.execute('select unprofessional, date, status from requests where unuser = "{}"'.format(v))
+    res = cur.fetchall()
+    print(res)
+
+    listBox = Text(rs_window, width=60)
+    canvas12.create_window(250, 200, window=listBox)
+
+    listBox.insert(END, "Sno | Name of professional      \t\t |Date      |Status\n")
+    listBox.insert(END, "----------------------------------------------------------")
+    listBox.insert(END, "\n")
+
+    for i in range(len(res)):
+        listBox.insert(END, (i + 1))
+        listBox.insert(END, "    |")
+        listBox.insert(END, res[i][0])
+        listBox.insert(END, "                      \t \t |")
+        listBox.insert(END, res[i][1])
+        listBox.insert(END, "  \t|")
+        if res[i][2]:
+            listBox.insert(END, "Accepted")
+        else:
+            listBox.insert(END, "Not Accepted")
+        listBox.insert(END, "\n")
+
+
     rs_window.mainloop()
 
 
@@ -393,7 +397,7 @@ def profile_user():
     global d11
     profile_user_window= Toplevel()
     profile_user_window.title('Profile')
-    profile_user_window.geometry('160x230')
+    profile_user_window.geometry('225x270+165+65')
     profile_user_window.resizable(0, 0)
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
@@ -437,9 +441,9 @@ def change_username_user():
             messagebox.showwarning(" ", "Username already exists!")
 
     change_username_window_user = Tk()
-    change_username_window_user.geometry('240x67')
+    change_username_window_user.geometry('240x67+165+65')
     change_username_window_user.title('Change Username')
-    change_password_window_user.resizable(0, 0)
+    change_username_window_user.resizable(0, 0)
     Label(change_username_window_user,text='Previous Username: ').grid(row=0,column=0)
     Label(change_username_window_user,text='{}'.format(v)).grid(row=0,column=1)
     Label(change_username_window_user,text='New Username').grid(row=1,column=0)
@@ -464,7 +468,7 @@ def change_password_user():
         change_password_window_user.destroy()
     change_password_window_user = Tk()
     change_password_window_user.title('Change Password')
-    change_password_window_user.geometry('240x67')
+    change_password_window_user.geometry('240x67+165+65')
     change_password_window_user.resizable(0, 0)
     Label(change_password_window_user, text='Previous Password: ').grid(row=0, column=0)
     Label(change_password_window_user, text='{}'.format(w)).grid(row=0, column=1)
@@ -472,7 +476,19 @@ def change_password_user():
     new_password = Entry(change_password_window_user)
     new_password.grid(row=1, column=1)
     Button(change_password_window_user, text='Submit',command=lambda: change_password_user_submit_command(new_password.get())).grid(row=2, column=0,columnspan=2)
-
+def remove_acc_():
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    def rem():
+        o=messagebox.askquestion("Confirm", "Are you sure?")
+        if o=='yes':
+            cur.execute('delete from user where username="{}"'.format(v))
+            main_window.destroy()
+            ls()
+        else:
+            pass
+    rem()
 def sign_out():
     main_window.destroy()
     ls()
@@ -498,6 +514,7 @@ def mainwindow_user(u):
     dropmenu.menu.add_command(label='Profile',command=profile_user)
     dropmenu.menu.add_command(label='Username Reset',command=change_username_user)
     dropmenu.menu.add_command(label='Password Reset',command=change_password_user)
+    dropmenu.menu.add_command(label='Remove Account', command=remove_acc_)
     dropmenu.menu.add_command(label='Sign Out',command=sign_out)
 
     dropmenu.pack(side=RIGHT, padx=10, pady=5)
@@ -512,11 +529,13 @@ def mainwindow_user(u):
     canvas = Canvas(main_window, width=1920,height=1080)
     canvas.pack(fill='both', expand=True)
     canvas.create_image(960, 540, image=bg, anchor="center")
-    canvas.create_text(500, 200, text="Sampletext\nSampletext\nSampletext\nSampletext",font=('TkDefaultFont',30,'bold'))
+    #
+    homepage = ImageTk.PhotoImage(Image.open('Homepage.png').resize((1010, 390), Image.ANTIALIAS))
+    canvas.create_image(510,20,image=homepage, anchor="n")
     button2 = Button(main_window, text="Request Status",font=('arial',12,'bold'),height=3,width=30, bg='light green', fg='blue',command=request_status)
     button1 = Button(main_window, text="Search For Services",font=('arial',12,'bold'),height=3,width=30, bg='light green', fg='blue',command=search_service)
-    canvas.create_window(150, 400,anchor='nw',window=button1)
-    canvas.create_window(550, 400,anchor='nw', window=button2)
+    canvas.create_window(150, 430,anchor='nw',window=button1)
+    canvas.create_window(550, 430,anchor='nw', window=button2)
 
 
     # Main window features
@@ -529,7 +548,7 @@ def profile_professional():
     global c11
     profile_professional_window= Toplevel()
     profile_professional_window.title('Profile')
-    profile_professional_window.geometry('160x230')
+    profile_professional_window.geometry('225x270+165+65')
     profile_professional_window.resizable(0, 0)
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
@@ -575,11 +594,11 @@ def change_username_professional():
             messagebox.showwarning(" ", "Username already exists!")
 
     change_username_window_professional = Tk()
-    change_username_window_professional.geometry('240x67')
+    change_username_window_professional.geometry('240x67+165+65')
     change_username_window_professional.title('Change Username')
     change_username_window_professional.resizable(0, 0)
     Label(change_username_window_professional,text='Previous Username: ').grid(row=0,column=0)
-    Label(change_username_window_professional,text='"{}"'.format(v)).grid(row=0,column=1)
+    Label(change_username_window_professional,text='{}'.format(v)).grid(row=0,column=1)
     Label(change_username_window_professional,text='New Username').grid(row=1,column=0)
     new_username = Entry(change_username_window_professional)
     new_username.grid(row=1, column=1)
@@ -589,7 +608,7 @@ def change_password_professional():
     import mysql.connector as sql
     con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
     cur = con.cursor()
-    cur.execute('select password from professional where username = "{}"'.format(v))
+    cur.execute('select password from professional where username ="{}"'.format(v))
     w = cur.fetchall()
     w = w[0][0]
     def change_password_professional_submit_command(np):
@@ -600,7 +619,7 @@ def change_password_professional():
         change_password_window_professional.destroy()
     change_password_window_professional = Tk()
     change_password_window_professional.title('Change Password')
-    change_password_window_professional.geometry('240x67')
+    change_password_window_professional.geometry('240x67+165+65')
     change_password_window_professional.resizable(0, 0)
     Label(change_password_window_professional, text='Previous Password: ').grid(row=0, column=0)
     Label(change_password_window_professional, text='{}'.format(w)).grid(row=0, column=1)
@@ -608,6 +627,43 @@ def change_password_professional():
     new_password = Entry(change_password_window_professional)
     new_password.grid(row=1, column=1)
     Button(change_password_window_professional, text='Submit',command=lambda: change_password_professional_submit_command(new_password.get())).grid(row=2, column=0,columnspan=2)
+'''def change_address_professional():
+    global w
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    cur.execute('select address from professional where username ="{}"'.format(v))
+    w = cur.fetchall()
+    w = w[0][0]
+    def change_address_professional_submit_command(np):
+        import mysql.connector as sql
+        con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+        cur = con.cursor()
+        cur.execute('update professional set address = "{}" where username ="{}"'.format(np,v))
+        change_address_window_professional.destroy()
+    change_address_window_professional = Tk()
+    change_address_window_professional.title('Change Address')
+    change_address_window_professional.geometry('300x100+165+65')
+    change_address_window_professional.resizable(0, 0)
+    Label(change_address_window_professional, text='Previous Address: ').grid(row=0, column=0)
+    Label(change_address_window_professional, text='{}'.format(w)).grid(row=0, column=1)
+    Label(change_address_window_professional, text='New Address').grid(row=1, column=0)
+    new_address = Entry(change_address_window_professional)
+    new_address.grid(row=1, column=1)
+    Button(change_address_window_professional, text='Submit',command=lambda: change_address_professional_submit_command(new_address.get())).grid(row=2, column=0,columnspan=2)'''
+def remove_acc():
+    import mysql.connector as sql
+    con = sql.connect(host='localhost', user='root', password='2810', database='kdproject', autocommit=True)
+    cur = con.cursor()
+    def rem():
+        o=messagebox.askquestion("Confirm", "Are you sure?")
+        if o=='yes':
+            cur.execute('delete from professional where username="{}"'.format(v))
+            main_window.destroy()
+            ls()
+        else:
+            pass
+    rem()
 
 def sign_out():
     main_window.destroy()
@@ -633,20 +689,20 @@ def mainwindow_professional(u):
     dropmenu.menu.add_command(label='Profile',command=profile_professional)
     dropmenu.menu.add_command(label='Username Reset',command=change_username_professional)
     dropmenu.menu.add_command(label='Password Reset',command=change_password_professional)
-    dropmenu.menu.add_command(label='Sign Out',command=sign_out)
-
-
+    dropmenu.menu.add_command(label='Remove Account', command=remove_acc)
+    dropmenu.menu.add_command(label='Sign Out', command=sign_out)
+    #A one stop platform for Reliable and Prompt service in installation, maintenance and repair for all your home gadgets, appliances, items and products. This covers plumbing, electrical, white goods, carpentry, painting and similar home and utility services.
+    #One click and get a quote!
     dropmenu.pack(side=RIGHT, padx=10, pady=5)
     # Image
     bg = ImageTk.PhotoImage(Image.open('NewImage1.jpeg').resize((1920, 1080), Image.ANTIALIAS))
     canvas = Canvas(main_window, width=1920, height=1080)
     canvas.pack(fill='both', expand=True)
     canvas.create_image(960, 540, image=bg, anchor="center")
-    canvas.create_text(500, 200, text="Sampletext\nSampletext\nSampletext\nSampletext",font=('TkDefaultFont', 30, 'bold'))
+    homepage = ImageTk.PhotoImage(Image.open('Homepage prof.png').resize((1010, 390), Image.ANTIALIAS))
+    canvas.create_image(510, 20, image=homepage, anchor="n")
     button1 = Button(main_window, text="View requests", font=('arial', 12, 'bold'), height=3, width=30,bg='light green', fg='blue', command=requests)
-    button2 = Button(main_window, text="Activity log", font=('arial', 12, 'bold'), height=3, width=30,bg='light green', fg='blue',command = activity)
-    canvas.create_window(150, 400, anchor='nw', window=button1)
-    canvas.create_window(550, 400, anchor='nw', window=button2)
+    canvas.create_window(350, 430, anchor='nw', window=button1)
 
     # Main window features
     import mysql.connector as sql
@@ -754,14 +810,29 @@ def ls():
     # signup professional and user
 
     def lc_refer():
-        lc_refer_window = Tk()
+        '''lc_refer_window = Tk()
         lc_refer_window.title('Location Codes')
         lc_refer_window.geometry('290x300+460+260')
         lc_refer_window.resizable(0, 0)
         lc_frame1 = Frame(lc_refer_window, width=600, height=600)
-        lc_frame1.pack(fill=BOTH,expand=1)
+        lc_frame1.pack(fill=BOTH,expand=1)'''
 
-        lc_canvas = Canvas(lc_frame1)
+        lc_frame1 = Tk()
+        lc_frame1.geometry('90x250+460+260')
+        scrollbar = Scrollbar(lc_frame1)
+        scrollbar.pack(side=RIGHT, fill=Y)
+
+        mylist = Listbox(lc_frame1, yscrollcommand=scrollbar.set)
+        for i in range(46):
+            mylist.insert(END, "{}       {}".format(lc[i][0], lc[i][1]))
+
+        mylist.pack(side=LEFT, fill=BOTH,expand=True)
+
+
+        scrollbar.config(command=mylist.yview)
+        lc_frame1.mainloop()
+
+        '''lc_canvas = Canvas(lc_frame1)
         lc_canvas.pack(side=LEFT,fill=BOTH,expand=1)
 
         scrollbar = ttk.Scrollbar(lc_frame1, orient=VERTICAL,command= lc_canvas.yview)
@@ -776,16 +847,14 @@ def ls():
 
         for i in range(len(lc)):
             Label(lc_frame2, text=lc[i][0]).grid(row=i+2, column=0)
-            Label(lc_frame2, text=lc[i][1]).grid(row=i+2, column=1)
-
-
+            Label(lc_frame2, text=lc[i][1]).grid(row=i+2, column=1)'''
         '''for i in range(len(lc)):
             Label(lc_refer_window,text=lc[i][0]).grid(row=2+i,column=0)
             Label(lc_refer_window, text=lc[i][1]).grid(row=2+i, column=1)
         scrollbar = Scrollbar(lc_refer_window,orient=VERTICAL)
-        scrollbar.grid(row=0,column=2,sticky='ns')'''
+        scrollbar.grid(row=0,column=2,sticky='ns')
 
-        lc_refer_window.mainloop()
+        lc_refer_window.mainloop()'''
     def signup_professional():
         global a1, a2, a3, a4, a5, a6, a7, a8, root_sp
         root_sp = Toplevel()
